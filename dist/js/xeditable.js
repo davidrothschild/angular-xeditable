@@ -769,6 +769,12 @@ angular.module('xeditable').factory('editableController',
         $q.when(result).then(
           //success and fail handlers are equal
           angular.bind(this, function(r) {
+		    // DR: if validator returns object with property newValue, set it into our Model
+		    if (r.NewValue !== "undefined") {
+				this.scope.$data = r.newValue;
+				this.scope.$form.$data[$attrs.eName] = r.newValue;
+				this.save();
+			}
             this.catchError(r, true);
           }),
           angular.bind(this, function(r) {
